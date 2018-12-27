@@ -1,4 +1,5 @@
 const crypto = require('crypto')
+const _ = require('lodash');
 const Sequelize = require('sequelize')
 const db = require('../db')
 
@@ -36,6 +37,10 @@ module.exports = User
  */
 User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
+}
+
+User.prototype.sanitize = function () {
+  return _.omit(this.toJSON(), ['password', 'salt']);
 }
 
 /**
